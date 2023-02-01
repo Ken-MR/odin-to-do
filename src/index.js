@@ -1,4 +1,8 @@
 import './style.css';
 import createTask from './taskLogic';
+import generateLayout from './pageManager';
 
-createTask ();
+window.onload = function() {
+    generateLayout();
+    createTask();
+};

@@ -1,0 +1,50 @@
+#content {
+    display: grid !important;
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr 4fr;
+
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+#side-bar {
+    background-color: grey;
+
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
+    
+    display: grid;
+    grid-template-rows: 1fr 4fr;
+}
+
+#filter-tabs {
+    border-bottom: solid 5px darkgray;
+    grid-row: 1 / 2;
+}
+
+#filter-tabs > ul {
+    list-style: none;
+    padding: 0;
+    margin-left: 40px;
+    display: grid;
+    gap: 24px;
+}
+
+li {
+    padding: 0;
+    margin: 0;
+}
+
+#task-list {
+    grid-row: 2 / -1;
+}
+
+#task-info {
+    background-color: white;
+
+    grid-column: 2;
+    grid-row: 1 / -1;
+}
