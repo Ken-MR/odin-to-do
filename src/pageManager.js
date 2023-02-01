@@ -29,10 +29,20 @@ export default function generateLayout() {
   for (let i = 0; i < filters.length; i++) {
     listElement = document.createElement('li');
     listHeader = document.createTextNode(filters[i]);
+    listElement.setAttribute('id', `${filters[i].replace(/\s/g, "-")}`);
     listElement.appendChild(listHeader);
     filterList.appendChild(listElement);
   }
 
   filterTabs.appendChild(filterList);
 
+  for (let i = 0; i < filters.length; i++) {
+    filterListeners(filters[i]);
+  }
+
+}
+
+function filterListeners (filter) {
+  let tab = document.getElementById(`${filter.replace(/\s/g, "-")}`);
+  tab.addEventListener('click', () => console.log(`You clicked on ${filter}`));
 }
