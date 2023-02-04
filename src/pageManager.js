@@ -1,5 +1,5 @@
 
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 export function generateLayout() {
   console.log('Generating a page!');
@@ -53,6 +53,23 @@ export function loadTasks (tasks) {
   console.log('I am loading tasks!');
   let content = document.getElementById('content');
   if (tasks.length === 0) {
-    swal("You do not have any tasks. Would you like to create one?"); 
+    console.log('No tasks found!');
+    Swal.fire({
+      title: 'You do not have any tasks. Would you like to create one?',
+      icon: 'question',
+      showCloseButton: true,
+      showDenyButton: true,
+      focusConfirm: false,
+      confirmButtonText: 'Yes',
+      denyButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        addTaskPage ();
+      }
+    });
   }
+}
+
+function addTaskPage () {
+  console.log("Let's add one!");
 }
