@@ -1,5 +1,7 @@
 
-export default function generateLayout() {
+import swal from 'sweetalert';
+
+export function generateLayout() {
   console.log('Generating a page!');
   const content = document.getElementById('content');
 
@@ -45,4 +47,12 @@ export default function generateLayout() {
 function filterListeners (filter) {
   let tab = document.getElementById(`${filter.replace(/\s/g, "-")}`);
   tab.addEventListener('click', () => console.log(`You clicked on ${filter}`));
+}
+
+export function loadTasks (tasks) {
+  console.log('I am loading tasks!');
+  let content = document.getElementById('content');
+  if (tasks.length === 0) {
+    swal("You do not have any tasks. Would you like to create one?"); 
+  }
 }
