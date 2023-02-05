@@ -44,15 +44,19 @@ li {
 
 #task-info {
     background-color: white;
+    padding: 10px;
 
     grid-column: 2;
     grid-row: 1 / -1;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 20px;
+   display: grid;
+   grid-template-rows: 100px 1fr;
+}
+
+#task-info > h1 {
+    position: relative;
+    top: 20px;
+    left: 20px;
 }
 
 form {
@@ -118,4 +122,51 @@ input[type="submit"] {
     border-radius: 10px;
     background-color: rgb(36, 27, 134);
     border: 1px solid rgb(36, 27, 134);
+}
+
+.tasks {
+    display: grid;
+    grid-template-rows: 300px 300px 300px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 30px;
+    padding: 20px;
+    grid-column: 1;
+    grid-row: 2 / -1;
+    color: black;
+}
+    
+.card {
+    background-color: white;
+    padding: 10px;
+    border: 5px solid rgb(36, 27, 134);
+    border-left: 15px solid rgb(36, 27, 134);
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-rows: 50px 100px 50px;
+    
+}
+
+.card > h3 {
+    position: relative;
+    left: 10px;
+    top: 20px;
+    grid-row: 1;
+}
+
+.card > p {
+    position: relative;
+    left: 10px;
+    grid-row: 2;
+    width: 75%;
+}
+
+.card > div {
+    position: relative;
+    grid-row: 3;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+    padding-right: 20px;
 }

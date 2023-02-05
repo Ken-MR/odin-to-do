@@ -46,11 +46,17 @@ export function generateLayout() {
 
 function filterListeners (filter) {
   let tab = document.getElementById(`${filter.replace(/\s/g, "-")}`);
-  tab.addEventListener('click', () => console.log(`You clicked on ${filter}`));
+  tab.addEventListener('click', () => {
+    console.log(`You clicked on ${filter}`)
+    if (filter === 'All Tasks') {
+      loadTasks(tasks);
+    }
+  });
 }
 
 export function loadTasks (tasks) {
   console.log('I am loading tasks!');
+
   if (tasks.length === 0) {
     console.log('No tasks found!');
     Swal.fire({
@@ -68,7 +74,56 @@ export function loadTasks (tasks) {
     });
     return;
   }
+
   const taskInfo = document.getElementById('task-info');
+  let first = taskInfo.firstElementChild;
+  while (first) {
+    first.remove();
+    first = taskInfo.firstElementChild;
+  }
+
+  const taskListHeader = document.createElement('h1');
+  taskListHeader.appendChild(document.createTextNode('Your Tasks'));
+  taskListHeader.setAttribute('grid-row', '1');
+
+  const taskList = document.createElement('div');
+  taskList.setAttribute('class', 'tasks');
+  taskList.setAttribute('grid-row', '2');
+
+  taskInfo.appendChild(taskListHeader);
+  taskInfo.appendChild(taskList);
+
+  for (let i = 0; i < tasks.length; i++) {
+    let taskName = tasks[i].name;
+    let taskDueDate = tasks[i].dueDate;
+    let taskPriority = tasks[i].priority;
+    let taskDescription = tasks[i].description;
+
+    let card = document.createElement('div');
+    card.setAttribute('class', 'card');
+
+    let cardName = document.createElement('h3');
+    cardName.appendChild(document.createTextNode(taskName));
+    let cardDescription = document.createElement('p');
+    cardDescription.appendChild(document.createTextNode(taskDescription));
+
+    let cardFooter = document.createElement('div');
+    /*let cardPriority = document.createElement('p');
+    cardPriority.appendChild(document.createTextNode(taskPriority));
+    let cardDueDate = document.createElement('p');
+    cardDueDate.appendChild(document.createTextNode(taskDueDate));
+
+    cardFooter.appendChild(document.createTextNode(cardPriority));
+    cardFooter.appendChild(document.createTextNode(cardDueDate));*/
+    cardFooter.appendChild(document.createTextNode(taskPriority));
+    cardFooter.appendChild(document.createTextNode(taskDueDate));
+
+    card.appendChild(cardName);
+    card.appendChild(cardDescription);
+    card.appendChild(cardFooter);
+
+    taskList.appendChild(card);
+  }
 }
 
 function addTaskPage () {
@@ -77,10 +132,12 @@ function addTaskPage () {
 
   const taskHeader = document.createElement('h1');
   taskHeader.appendChild(document.createTextNode('Complete this form to add a new task'));
+  taskHeader.setAttribute('grid-row', '1');
 
   const taskForm = document.createElement('form');
   taskForm.setAttribute('id', 'taskForm');
   taskForm.setAttribute('onSubmit', 'event.preventDefault() & addTask()');
+  taskForm.setAttribute('grid-row', '2');
 
   taskInfo.appendChild(taskHeader);
   taskInfo.appendChild(taskForm);
