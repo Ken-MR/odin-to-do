@@ -1,6 +1,7 @@
 import './style.css';
 import { addTask } from './taskLogic';
 import { tasks } from './taskLogic';
+import { projects } from './taskLogic';
 
 import { generateLayout } from './pageManager';
 import { loadTasks } from './pageManager';

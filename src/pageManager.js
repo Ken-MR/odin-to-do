@@ -1,5 +1,6 @@
 
 import Swal from 'sweetalert2';
+import { projects } from './taskLogic';
 
 export function generateLayout() {
   console.log('Generating a page!');
@@ -43,9 +44,22 @@ export function generateLayout() {
   }
 
   const projectList = document.createElement('ul');
-  let projectMisc = document.createElement('li');
-  projectMisc.appendChild(document.createTextNode('Misc.'));
-  projectList.appendChild(projectMisc);
+  projectList.setAttribute('id', 'project-list-start');
+
+  for (let i = 0; i < projects.length; i++) {
+    let project = document.createElement('li');
+    project.appendChild(document.createTextNode(projects[i].name));
+    projectList.appendChild(project);
+    let taskTree = document.createElement('ul');
+    project.appendChild(taskTree);
+    for (let j = 0; j < taskTree.length; j++) {
+      if (taskTree[j].project === project[i].name) {
+        let taskItem = document.createElement('li');
+        taskItem.appendChild(document.createTextNode(taskTree[j].name));
+        taskTree.appendChild(taskItem);
+      }
+    }
+  }
 
   projectTabs.appendChild(projectList);
 }
@@ -177,7 +191,7 @@ function addTaskPage () {
   projectInput.setAttribute('type', 'text');
   projectInput.setAttribute('id', 'project');
   projectInput.setAttribute('name', 'project');
-  projectInput.setAttribute('value', 'misc.');
+  projectInput.setAttribute('value', 'misc');
 
   // create title input
 
@@ -299,12 +313,50 @@ function clearTaskWindow (taskInfo) {
 
 window.clearTaskWindow = clearTaskWindow;
 
+// below function executes various functions that are required whenever a new task is added
+
 function manageTasks () {
   addTask();
+  createProject();
+  //updateSideBar();
   addAnotherTask();
 }
 
+function updateSideBar () {
+  if (project.value === 'misc.') {
+    let misc = document.getElementById('misc');
+    let miscList = document.createElement('ul');
+    let miscListItem = document.createElement('li');
+    miscListItem.appendChild(document.createTextNode(`${title.value}`));
+    miscList.appendChild(miscListItem);
+    misc.appendChild(miscList);
+  }
+  else if (projects.includes(`${project.value}`)) {
+    let projectList = document.getElementById('project-list-start');
+    let li = projectList.getElementsByTagName('li');
+    for (let i = 0; i < li.length; i++) {
+      if (li[i] === `${project.value}`) {
+        let liItem = document.createElement('li');
+        liItem.appendChild(document.createTextNode(`${title.value}`));
+        li[i].firstChild.appendChild(liItem);
+      }
+    }
+  }
+  else {
+    let project = document.createElement('li');
+    project.appendChild(document.createTextNode(`${project.value}`));
+    let projectList = document.getElementById('project-list-start');
+    projectList.appendChild(project);
+    let taskList = document.createElement('ul');
+    let taskListItem = document.createElement('li');
+    taskListItem.appendChild(document.createTextNode(`${title.value}`));
+    taskList.appendChild(taskListItem);
+    project.appendChild(taskList);
+  }
+}
+
 window.manageTasks = manageTasks;
+window.updateSideBar = updateSideBar;
 
 function displayTask (task) {
   const taskInfo = document.getElementById('task-info');

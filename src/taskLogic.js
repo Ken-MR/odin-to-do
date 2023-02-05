@@ -9,7 +9,16 @@ export function addTask () {
 }
 
 export function createProject () {
-
+  if (project.value === 'misc') {
+    return;
+  }
+  else if (projects.includes(`${project.value}`)) {
+    return;
+  }
+  else {
+    projects.push(`${project.value}`);
+    return;
+  }
 }
 
 export function deleteTask (task) {
@@ -20,7 +29,9 @@ export function deleteTask (task) {
 
 window.addTask = addTask;
 window.deleteTask = deleteTask;
+window.createProject = createProject;
 window.tasks = tasks;
+window.projects = projects;
 
 export class Task {
   constructor (name, dueDate, priority, description, id, project = 'misc.') {
