@@ -1,5 +1,5 @@
 import './style.css';
-import { createTask } from './taskLogic';
+import { addTask } from './taskLogic';
 import { tasks } from './taskLogic';
 
 import { generateLayout } from './pageManager';

@@ -1,9 +1,13 @@
 
 export let tasks = [];
 
-export function createTask () {
+export function addTask () {
   console.log('Creating a task!');
+  tasks.push(new Task(`${title.value}`, `${dueDate.value}`, `${priority.value}`, `${description.value}`));
 }
+
+window.addTask = addTask;
+window.tasks = tasks;
 
 export class Task {
   constructor (name, dueDate, priority, description) {
