@@ -316,6 +316,25 @@ function displayTask (task) {
   const taskDelete = document.createElement('div');
   taskDelete.innerHTML = '<i class = "material-icons">delete</i>';
   taskDelete.setAttribute('class', 'delete-icon');
+  taskDelete.addEventListener('click', () => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this task?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+      }
+    })
+  });
 
   taskData.appendChild(taskDueDate);
   taskData.appendChild(taskPriority);
