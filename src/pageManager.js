@@ -57,6 +57,10 @@ function filterListeners (filter) {
 export function loadTasks (tasks) {
   console.log('I am loading tasks!');
 
+  const taskInfo = document.getElementById('task-info');
+
+  clearTaskWindow(taskInfo);
+
   if (tasks.length === 0) {
     console.log('No tasks found!');
     Swal.fire({
@@ -72,14 +76,10 @@ export function loadTasks (tasks) {
         addTaskPage ();
       }
     });
+    const noTasks = document.createElement('h1');
+    noTasks.appendChild(document.createTextNode('No tasks found!'));
+    taskInfo.appendChild(noTasks);
     return;
-  }
-
-  const taskInfo = document.getElementById('task-info');
-  let first = taskInfo.firstElementChild;
-  while (first) {
-    first.remove();
-    first = taskInfo.firstElementChild;
   }
 
   const taskListHeader = document.createElement('h1');
@@ -128,13 +128,15 @@ function addTaskPage () {
   console.log("Let's add one!");
   const taskInfo = document.getElementById('task-info');
 
+  clearTaskWindow(taskInfo);
+
   const taskHeader = document.createElement('h1');
   taskHeader.appendChild(document.createTextNode('Complete this form to add a new task'));
   taskHeader.setAttribute('grid-row', '1');
 
   const taskForm = document.createElement('form');
   taskForm.setAttribute('id', 'taskForm');
-  taskForm.setAttribute('onSubmit', 'event.preventDefault() & addTask()');
+  taskForm.setAttribute('onSubmit', 'event.preventDefault() & addTask() & addAnotherTask()');
   taskForm.setAttribute('grid-row', '2');
 
   taskInfo.appendChild(taskHeader);
@@ -145,7 +147,7 @@ function addTaskPage () {
     formBox.setAttribute('class', 'data');
     taskForm.appendChild(formBox);
   }
-  
+
   // create grid so form entry elements are separate and can be read by the user.
 
   // create form submit button
@@ -241,3 +243,34 @@ function addTaskPage () {
   taskForm.childNodes[4].appendChild(descriptionLabel);
   taskForm.childNodes[4].appendChild(descriptionInput);
 }
+
+function addAnotherTask() {
+  Swal.fire({
+    title: 'Task added, would you like to add another?',
+    icon: 'question',
+    showCloseButton: true,
+    showDenyButton: true,
+    focusConfirm: false,
+    confirmButtonText: 'Yes, I have more tasks',
+    denyButtonText: 'No, show my tasks',
+  }).then((result) => {
+    if (result.isConfirmed) {
+      addTaskPage();
+    }
+    else {
+      loadTasks(tasks);
+    }
+  });
+}
+
+window.addAnotherTask = addAnotherTask;
+
+function clearTaskWindow (taskInfo) {
+  let first = taskInfo.firstElementChild;
+  while (first) {
+    first.remove();
+    first = taskInfo.firstElementChild;
+  }
+}
+
+window.clearTaskWindow = clearTaskWindow;
