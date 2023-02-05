@@ -25,7 +25,7 @@
     grid-row: 1 / 2;
 }
 
-#filter-tabs > ul {
+#filter-tabs > ul, #project-tabs > ul {
     list-style: none;
     padding: 0;
     margin-left: 40px;
@@ -39,7 +39,7 @@ li {
     cursor: pointer;
 }
 
-#task-list {
+#project-tabs {
     grid-row: 2 / -1;
 }
 
@@ -86,16 +86,23 @@ form > div {
 }
 
 .data:nth-child(2) {
+    grid-column: 3;
+    grid-row: 1;
+    padding: 5px;
+    border: 0px;
+}
+
+.data:nth-child(3) {
     grid-column: 1 / 2;
     grid-row: 2;
 }
 
-.data:nth-child(3) {
+.data:nth-child(4) {
     grid-column: 2 / 3;
     grid-row: 2;
 }
 
-.data:nth-child(4) {
+.data:nth-child(5) {
     grid-column: 3 / 3;
     grid-row: 2;
 }

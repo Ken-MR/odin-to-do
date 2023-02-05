@@ -9,11 +9,11 @@ export function generateLayout() {
   sideBar.setAttribute('id', 'side-bar');
   const filterTabs = document.createElement('div');
   filterTabs.setAttribute('id', 'filter-tabs');
-  const taskList = document.createElement('div');
-  taskList.setAttribute('id', 'task-list');
+  const projectTabs = document.createElement('div');
+  projectTabs.setAttribute('id', 'project-tabs');
 
   sideBar.appendChild(filterTabs);
-  sideBar.appendChild(taskList);
+  sideBar.appendChild(projectTabs);
 
   const info = document.createElement('div');
   info.setAttribute('id', 'task-info');
@@ -42,6 +42,12 @@ export function generateLayout() {
     filterListeners(filters[i]);
   }
 
+  const projectList = document.createElement('ul');
+  let projectMisc = document.createElement('li');
+  projectMisc.appendChild(document.createTextNode('Misc.'));
+  projectList.appendChild(projectMisc);
+
+  projectTabs.appendChild(projectList);
 }
 
 function filterListeners (filter) {
@@ -146,7 +152,7 @@ function addTaskPage () {
   taskInfo.appendChild(taskHeader);
   taskInfo.appendChild(taskForm);
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 6; i++) {
     let formBox = document.createElement('div');
     formBox.setAttribute('class', 'data');
     taskForm.appendChild(formBox);
@@ -161,6 +167,17 @@ function addTaskPage () {
   submitButton.setAttribute('value', 'Submit');
   submitButton.setAttribute('id', 'submit');
   submitButton.setAttribute('name', 'submit');
+
+  // create project input
+
+  const projectLabel = document.createElement('label');
+  projectLabel.htmlFor = 'project';
+
+  const projectInput = document.createElement('input');
+  projectInput.setAttribute('type', 'text');
+  projectInput.setAttribute('id', 'project');
+  projectInput.setAttribute('name', 'project');
+  projectInput.setAttribute('value', 'misc.');
 
   // create title input
 
@@ -235,17 +252,20 @@ function addTaskPage () {
 
   taskForm.childNodes[0].appendChild(submitButton);
 
-  taskForm.childNodes[1].appendChild(titleLabel);
-  taskForm.childNodes[1].appendChild(titleInput);
+  taskForm.childNodes[1].appendChild(projectInput);
+  taskForm.childNodes[1].appendChild(projectLabel);
 
-  taskForm.childNodes[2].appendChild(dueDateLabel);
-  taskForm.childNodes[2].appendChild(dueDateInput);
+  taskForm.childNodes[2].appendChild(titleLabel);
+  taskForm.childNodes[2].appendChild(titleInput);
 
-  taskForm.childNodes[3].appendChild(priorityLabel);
-  taskForm.childNodes[3].appendChild(priorityInput);
+  taskForm.childNodes[3].appendChild(dueDateLabel);
+  taskForm.childNodes[3].appendChild(dueDateInput);
 
-  taskForm.childNodes[4].appendChild(descriptionLabel);
-  taskForm.childNodes[4].appendChild(descriptionInput);
+  taskForm.childNodes[4].appendChild(priorityLabel);
+  taskForm.childNodes[4].appendChild(priorityInput);
+
+  taskForm.childNodes[5].appendChild(descriptionLabel);
+  taskForm.childNodes[5].appendChild(descriptionInput);
 }
 
 function addAnotherTask() {
