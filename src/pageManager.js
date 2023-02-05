@@ -327,11 +327,13 @@ function displayTask (task) {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
+        deleteTask(task);
         Swal.fire(
           'Deleted!',
-          'Your file has been deleted.',
+          'Your task has been deleted.',
           'success'
         )
+        loadTasks(tasks);
       }
     })
   });
