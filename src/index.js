@@ -8,5 +8,4 @@ import { loadTasks } from './pageManager';
 window.onload = function() {
     generateLayout();
     loadTasks(tasks);
-    //createTask();
 };

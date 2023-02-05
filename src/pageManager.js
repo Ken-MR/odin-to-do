@@ -108,15 +108,13 @@ export function loadTasks (tasks) {
     cardDescription.appendChild(document.createTextNode(taskDescription));
 
     let cardFooter = document.createElement('div');
-    /*let cardPriority = document.createElement('p');
+    let cardPriority = document.createElement('div');
     cardPriority.appendChild(document.createTextNode(taskPriority));
-    let cardDueDate = document.createElement('p');
+    let cardDueDate = document.createElement('div');
     cardDueDate.appendChild(document.createTextNode(taskDueDate));
 
-    cardFooter.appendChild(document.createTextNode(cardPriority));
-    cardFooter.appendChild(document.createTextNode(cardDueDate));*/
-    cardFooter.appendChild(document.createTextNode(taskPriority));
-    cardFooter.appendChild(document.createTextNode(taskDueDate));
+    cardFooter.append(cardPriority);
+    cardFooter.append(cardDueDate);
 
     card.appendChild(cardName);
     card.appendChild(cardDescription);
@@ -147,6 +145,7 @@ function addTaskPage () {
     formBox.setAttribute('class', 'data');
     taskForm.appendChild(formBox);
   }
+  
   // create grid so form entry elements are separate and can be read by the user.
 
   // create form submit button
