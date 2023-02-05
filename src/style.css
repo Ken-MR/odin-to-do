@@ -39,6 +39,12 @@ li {
     cursor: pointer;
 }
 
+li > ul {
+    padding-left: 10px;
+    margin: 0;
+    list-style: none;
+}
+
 #project-tabs {
     grid-row: 2 / -1;
 }

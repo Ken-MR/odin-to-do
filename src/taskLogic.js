@@ -1,7 +1,7 @@
 
 export let tasks = [];
 
-export let projects = ['misc',];
+export let projects = [];
 
 export function addTask () {
   console.log('Creating a task!');
@@ -16,7 +16,7 @@ export function createProject () {
     return;
   }
   else {
-    projects.push(`${project.value}`);
+    projects.push(new Project(`${project.value}`));
     return;
   }
 }
@@ -49,3 +49,5 @@ export class Project {
     this.name = name;
   }
 }
+
+projects.push(new Project('misc'));

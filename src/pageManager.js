@@ -46,22 +46,22 @@ export function generateLayout() {
   const projectList = document.createElement('ul');
   projectList.setAttribute('id', 'project-list-start');
 
+  projectTabs.appendChild(projectList);
+
   for (let i = 0; i < projects.length; i++) {
     let project = document.createElement('li');
     project.appendChild(document.createTextNode(projects[i].name));
     projectList.appendChild(project);
     let taskTree = document.createElement('ul');
     project.appendChild(taskTree);
-    for (let j = 0; j < taskTree.length; j++) {
-      if (taskTree[j].project === project[i].name) {
+    for (let j = 0; j < tasks.length; j++) {
+      if (tasks[j].project === projects[i].name) {
         let taskItem = document.createElement('li');
-        taskItem.appendChild(document.createTextNode(taskTree[j].name));
+        taskItem.appendChild(document.createTextNode(tasks[j].name));
         taskTree.appendChild(taskItem);
       }
     }
   }
-
-  projectTabs.appendChild(projectList);
 }
 
 function filterListeners (filter) {
@@ -318,45 +318,11 @@ window.clearTaskWindow = clearTaskWindow;
 function manageTasks () {
   addTask();
   createProject();
-  //updateSideBar();
+  generateLayout();
   addAnotherTask();
 }
 
-function updateSideBar () {
-  if (project.value === 'misc.') {
-    let misc = document.getElementById('misc');
-    let miscList = document.createElement('ul');
-    let miscListItem = document.createElement('li');
-    miscListItem.appendChild(document.createTextNode(`${title.value}`));
-    miscList.appendChild(miscListItem);
-    misc.appendChild(miscList);
-  }
-  else if (projects.includes(`${project.value}`)) {
-    let projectList = document.getElementById('project-list-start');
-    let li = projectList.getElementsByTagName('li');
-    for (let i = 0; i < li.length; i++) {
-      if (li[i] === `${project.value}`) {
-        let liItem = document.createElement('li');
-        liItem.appendChild(document.createTextNode(`${title.value}`));
-        li[i].firstChild.appendChild(liItem);
-      }
-    }
-  }
-  else {
-    let project = document.createElement('li');
-    project.appendChild(document.createTextNode(`${project.value}`));
-    let projectList = document.getElementById('project-list-start');
-    projectList.appendChild(project);
-    let taskList = document.createElement('ul');
-    let taskListItem = document.createElement('li');
-    taskListItem.appendChild(document.createTextNode(`${title.value}`));
-    taskList.appendChild(taskListItem);
-    project.appendChild(taskList);
-  }
-}
-
 window.manageTasks = manageTasks;
-window.updateSideBar = updateSideBar;
 
 function displayTask (task) {
   const taskInfo = document.getElementById('task-info');
