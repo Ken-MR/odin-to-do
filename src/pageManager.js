@@ -104,6 +104,10 @@ export function loadTasks (tasks) {
 
     let cardName = document.createElement('h3');
     cardName.appendChild(document.createTextNode(taskName));
+    cardName.addEventListener('click', () => {
+      displayTask(tasks[i]);
+    });
+
     let cardDescription = document.createElement('p');
     cardDescription.appendChild(document.createTextNode(taskDescription));
 
@@ -136,7 +140,7 @@ function addTaskPage () {
 
   const taskForm = document.createElement('form');
   taskForm.setAttribute('id', 'taskForm');
-  taskForm.setAttribute('onSubmit', 'event.preventDefault() & addTask() & addAnotherTask()');
+  taskForm.setAttribute('onSubmit', 'event.preventDefault() & manageTasks()');
   taskForm.setAttribute('grid-row', '2');
 
   taskInfo.appendChild(taskHeader);
@@ -274,3 +278,47 @@ function clearTaskWindow (taskInfo) {
 }
 
 window.clearTaskWindow = clearTaskWindow;
+
+function manageTasks () {
+  addTask();
+  addAnotherTask();
+}
+
+window.manageTasks = manageTasks;
+
+function displayTask (task) {
+  const taskInfo = document.getElementById('task-info');
+  clearTaskWindow(taskInfo);
+
+  const taskHeader = document.createElement('h1');
+  taskHeader.appendChild(document.createTextNode(`${task.name}`));
+  taskHeader.style.gridRow = '1';
+
+  const taskData = document.createElement('div');
+  taskData.style.gridRow = '2';
+  taskData.setAttribute('class', 'task-data');
+
+  taskInfo.appendChild(taskHeader);
+  taskInfo.appendChild(taskData);
+
+  const taskDueDate = document.createElement('div');
+  taskDueDate.appendChild(document.createTextNode(`Due: ${task.dueDate}`));
+  taskDueDate.setAttribute('class', 'task-date');
+
+  const taskPriority = document.createElement('div');
+  taskPriority.appendChild(document.createTextNode(`Priority: ${task.priority}`));
+  taskPriority.setAttribute('class', 'task-priority');
+
+  const taskDescription = document.createElement('div');
+  taskDescription.appendChild(document.createTextNode(` Description: ${task.description}`));
+  taskDescription.setAttribute('class', 'task-description');
+
+  const taskDelete = document.createElement('div');
+  taskDelete.innerHTML = '<i class = "material-icons">delete</i>';
+  taskDelete.setAttribute('class', 'delete-icon');
+
+  taskData.appendChild(taskDueDate);
+  taskData.appendChild(taskPriority);
+  taskData.appendChild(taskDescription);
+  taskData.appendChild(taskDelete);
+}
