@@ -6,6 +6,12 @@ export function generateLayout() {
   console.log('Generating a page!');
   const content = document.getElementById('content');
 
+  let first = content.firstElementChild;
+  while (first) {
+    first.remove();
+    first = content.firstElementChild;
+  }
+
   const sideBar = document.createElement('div');
   sideBar.setAttribute('id', 'side-bar');
   const filterTabs = document.createElement('div');
@@ -165,6 +171,8 @@ function addTaskPage () {
 
   taskInfo.appendChild(taskHeader);
   taskInfo.appendChild(taskForm);
+
+  // reload to add new task stops here? It works the first time for some inexplicable reason...
 
   for (let i = 0; i < 6; i++) {
     let formBox = document.createElement('div');
