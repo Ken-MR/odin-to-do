@@ -120,38 +120,42 @@ export function loadTasks (tasks) {
   taskInfo.appendChild(taskList);
 
   for (let i = 0; i < tasks.length; i++) {
-    let taskName = tasks[i].name;
-    let taskDueDate = tasks[i].dueDate;
-    let taskPriority = tasks[i].priority;
-    let taskDescription = tasks[i].description;
-
-    let card = document.createElement('div');
-    card.setAttribute('class', 'card');
-
-    let cardName = document.createElement('h3');
-    cardName.appendChild(document.createTextNode(taskName));
-    cardName.addEventListener('click', () => {
-      displayTask(tasks[i]);
-    });
-
-    let cardDescription = document.createElement('p');
-    cardDescription.appendChild(document.createTextNode(taskDescription));
-
-    let cardFooter = document.createElement('div');
-    let cardPriority = document.createElement('div');
-    cardPriority.appendChild(document.createTextNode(taskPriority));
-    let cardDueDate = document.createElement('div');
-    cardDueDate.appendChild(document.createTextNode(taskDueDate));
-
-    cardFooter.append(cardPriority);
-    cardFooter.append(cardDueDate);
-
-    card.appendChild(cardName);
-    card.appendChild(cardDescription);
-    card.appendChild(cardFooter);
-
-    taskList.appendChild(card);
+    taskList.appendChild(createTaskCard(tasks[i]));
   }
+}
+
+function createTaskCard (task) {
+  let taskName = task.name;
+  let taskDueDate = task.dueDate;
+  let taskPriority = task.priority;
+  let taskDescription = task.description;
+
+  let card = document.createElement('div');
+  card.setAttribute('class', 'card');
+
+  let cardName = document.createElement('h3');
+  cardName.appendChild(document.createTextNode(taskName));
+  cardName.addEventListener('click', () => {
+    displayTask(task);
+  });
+
+  let cardDescription = document.createElement('p');
+  cardDescription.appendChild(document.createTextNode(taskDescription));
+
+  let cardFooter = document.createElement('div');
+  let cardPriority = document.createElement('div');
+  cardPriority.appendChild(document.createTextNode(taskPriority));
+  let cardDueDate = document.createElement('div');
+  cardDueDate.appendChild(document.createTextNode(taskDueDate));
+
+  cardFooter.append(cardPriority);
+  cardFooter.append(cardDueDate);
+
+  card.appendChild(cardName);
+  card.appendChild(cardDescription);
+  card.appendChild(cardFooter);
+
+  return card;
 }
 
 function addTaskPage () {
