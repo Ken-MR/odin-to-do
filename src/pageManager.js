@@ -379,6 +379,7 @@ function displayTask (task) {
           'Your task has been deleted.',
           'success'
         )
+        generateLayout();
         loadTasks(tasks);
       }
     })
