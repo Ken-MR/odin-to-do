@@ -67,6 +67,9 @@ export function generateLayout() {
         taskTree.appendChild(taskItem);
       }
     }
+    project.addEventListener('click', () => {
+      loadProject(projects[i]);
+    });
   }
 }
 
@@ -124,11 +127,36 @@ export function loadTasks (tasks) {
   }
 }
 
+function loadProject (project) {
+  console.log('I am loading a project!');
+  const taskInfo = document.getElementById('task-info');
+
+  clearTaskWindow(taskInfo);
+
+  const projectName = document.createElement('h1');
+  projectName.appendChild(document.createTextNode(`${project.name}`));
+  projectName.setAttribute('grid-row', '1');
+
+  const taskList = document.createElement('div');
+  taskList.setAttribute('class', 'tasks');
+  taskList.setAttribute('grid-row', '2');
+
+  taskInfo.appendChild(projectName);
+  taskInfo.appendChild(taskList);
+
+  for (let i = 0; i < tasks.length; i++) {
+    if (tasks[i].project === project.name) {
+      taskList.appendChild(createTaskCard(tasks[i]));
+    }
+  }
+}
+
 function createTaskCard (task) {
   let taskName = task.name;
   let taskDueDate = task.dueDate;
   let taskPriority = task.priority;
   let taskDescription = task.description;
+  let taskProject = task.project;
 
   let card = document.createElement('div');
   card.setAttribute('class', 'card');
@@ -147,9 +175,12 @@ function createTaskCard (task) {
   cardPriority.appendChild(document.createTextNode(taskPriority));
   let cardDueDate = document.createElement('div');
   cardDueDate.appendChild(document.createTextNode(taskDueDate));
+  let cardProject = document.createElement('div');
+  cardProject.appendChild(document.createTextNode(taskProject));
 
   cardFooter.append(cardPriority);
   cardFooter.append(cardDueDate);
+  cardFooter.append(cardProject);
 
   card.appendChild(cardName);
   card.appendChild(cardDescription);
