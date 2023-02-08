@@ -65,6 +65,9 @@ export function generateLayout() {
         let taskItem = document.createElement('li');
         taskItem.appendChild(document.createTextNode(tasks[j].name));
         taskTree.appendChild(taskItem);
+        taskItem.addEventListener('click', () => {
+          displayTask(tasks[j]);
+        });
       }
     }
     project.addEventListener('click', () => {
@@ -133,15 +136,48 @@ function loadProject (project) {
 
   clearTaskWindow(taskInfo);
 
+  const projectHeader = document.createElement('div');
+  projectHeader.setAttribute('grid-row', '1');
+  projectHeader.setAttribute('id', 'project-header');
+
   const projectName = document.createElement('h1');
   projectName.appendChild(document.createTextNode(`${project.name}`));
-  projectName.setAttribute('grid-row', '1');
+
+  const projectDelete = document.createElement('div');
+  projectDelete.innerHTML = '<i class = "material-icons">delete</i>';
+  projectDelete.setAttribute('class', 'delete-icon');
+
+  projectHeader.appendChild(projectName);
+  projectHeader.appendChild(projectDelete);
+
+  projectDelete.addEventListener('click', () => {
+    Swal.fire({
+      title: 'Are you sure you want to delete this project?',
+      text: "You won't be able to revert this and it will deleted all associated tasks!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteProject(project);
+        Swal.fire(
+          'Deleted!',
+          'Your project has been deleted.',
+          'success'
+        )
+        generateLayout();
+        loadTasks(tasks);
+      }
+    })
+  });
 
   const taskList = document.createElement('div');
   taskList.setAttribute('class', 'tasks');
   taskList.setAttribute('grid-row', '2');
 
-  taskInfo.appendChild(projectName);
+  taskInfo.appendChild(projectHeader);
   taskInfo.appendChild(taskList);
 
   for (let i = 0; i < tasks.length; i++) {
