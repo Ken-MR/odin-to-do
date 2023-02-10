@@ -25,6 +25,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "date-fns": "^2.29.3",
     "init": "^0.1.2",
     "sweetalert2": "^11.7.1"
   }

@@ -1,6 +1,7 @@
 
 import Swal from 'sweetalert2';
 import { projects } from './taskLogic';
+import { isToday, isThisWeek, compareAsc, parse, format } from 'date-fns'
 
 export function generateLayout() {
   console.log('Generating a page!');
@@ -80,13 +81,11 @@ function filterListeners (filter) {
   let tab = document.getElementById(`${filter.replace(/\s/g, "-")}`);
   tab.addEventListener('click', () => {
     console.log(`You clicked on ${filter}`)
-    if (filter === 'All Tasks') {
-      loadTasks(tasks);
-    }
+    loadTasks(tasks, filter);
   });
 }
 
-export function loadTasks (tasks) {
+export function loadTasks (tasks, type) {
   console.log('I am loading tasks!');
 
   const taskInfo = document.getElementById('task-info');
@@ -114,8 +113,38 @@ export function loadTasks (tasks) {
     return;
   }
 
+  let filteredTasks = [];
+  const today = format(new Date(), 'yyyy-MM-dd');
+  let header = 'Your Tasks';
+  switch (type) {
+    case 'Today':
+      tasks.forEach((task) => {
+        // is today is not checking properly; returning false even if it's really true
+        console.log(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date()));
+        console.log(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
+        console.log(`${today}`, new Date());
+        console.log(isToday(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date())));
+        if (isToday(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date()))) {
+          console.log(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date()));
+          filteredTasks.push(task);
+          header = "Today's tasks";
+        }
+      });
+      break;
+    case 'Upcoming':
+      break;
+    case 'Past Due':
+      break;
+    case 'Anytime':
+      break;
+    default:
+      filteredTasks = tasks;
+  }
+
+  console.log(filteredTasks);
+
   const taskListHeader = document.createElement('h1');
-  taskListHeader.appendChild(document.createTextNode('Your Tasks'));
+  taskListHeader.appendChild(document.createTextNode(`${header}`));
   taskListHeader.setAttribute('grid-row', '1');
 
   const taskList = document.createElement('div');
@@ -126,7 +155,7 @@ export function loadTasks (tasks) {
   taskInfo.appendChild(taskList);
 
   for (let i = 0; i < tasks.length; i++) {
-    taskList.appendChild(createTaskCard(tasks[i]));
+    taskList.appendChild(createTaskCard(filteredTasks[i]));
   }
 }
 
