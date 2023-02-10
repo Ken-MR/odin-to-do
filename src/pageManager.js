@@ -60,6 +60,9 @@ export function generateLayout() {
     projectList.appendChild(project);
     let taskTree = document.createElement('ul');
     project.appendChild(taskTree);
+    project.addEventListener('click', () => {
+      loadProject(projects[i]);
+    });
     for (let j = 0; j < tasks.length; j++) {
       if (tasks[j].project === projects[i].name) {
         let taskItem = document.createElement('li');
@@ -70,9 +73,6 @@ export function generateLayout() {
         });
       }
     }
-    project.addEventListener('click', () => {
-      loadProject(projects[i]);
-    });
   }
 }
 
@@ -141,7 +141,7 @@ function loadProject (project) {
   projectHeader.setAttribute('id', 'project-header');
 
   const projectName = document.createElement('h1');
-  projectName.appendChild(document.createTextNode(`${project.name}`));
+  projectName.appendChild(document.createTextNode(`Project: ${project.name}`));
 
   const projectDelete = document.createElement('div');
   projectDelete.innerHTML = '<i class = "material-icons">delete</i>';
