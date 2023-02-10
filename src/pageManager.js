@@ -1,7 +1,7 @@
 
 import Swal from 'sweetalert2';
 import { projects } from './taskLogic';
-import { isToday, isThisWeek, compareAsc, parse, format } from 'date-fns'
+import { isToday, isThisWeek, compareAsc, parse, parseISO, format } from 'date-fns'
 
 export function generateLayout() {
   console.log('Generating a page!');
@@ -114,24 +114,25 @@ export function loadTasks (tasks, type) {
   }
 
   let filteredTasks = [];
-  const today = format(new Date(), 'yyyy-MM-dd');
   let header = 'Your Tasks';
   switch (type) {
     case 'Today':
       tasks.forEach((task) => {
-        // is today is not checking properly; returning false even if it's really true
-        console.log(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date()));
-        console.log(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
-        console.log(`${today}`, new Date());
-        console.log(isToday(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date())));
         if (isToday(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date()))) {
-          console.log(parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date()));
           filteredTasks.push(task);
           header = "Today's tasks";
         }
       });
       break;
     case 'Upcoming':
+      let today = format(new Date(), 'yyyy-MM-dd');
+      header = "Upcoming tasks";
+      tasks.forEach((task) => {
+        let parsedDate = parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
+        if (isThisWeek(parsedDate) && (compareAsc(parsedDate, parseISO(today)) >= 0)) {
+          filteredTasks.push(task);
+        }
+      });
       break;
     case 'Past Due':
       break;
@@ -140,8 +141,6 @@ export function loadTasks (tasks, type) {
     default:
       filteredTasks = tasks;
   }
-
-  console.log(filteredTasks);
 
   const taskListHeader = document.createElement('h1');
   taskListHeader.appendChild(document.createTextNode(`${header}`));
