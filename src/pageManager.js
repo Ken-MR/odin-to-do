@@ -144,6 +144,12 @@ export function loadTasks (tasks, type) {
       });
       break;
     case 'Anytime':
+      header = "Non-critical tasks";
+      tasks.forEach((task) => {
+        if (task.priority === 'none') {
+          filteredTasks.push(task);
+        }
+      });
       break;
     default:
       filteredTasks = tasks;
