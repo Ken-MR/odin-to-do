@@ -155,20 +155,25 @@ export function loadTasks (tasks, type) {
       filteredTasks = tasks;
   }
 
-  const taskListHeader = document.createElement('h1');
-  taskListHeader.appendChild(document.createTextNode(`${header}`));
-  taskListHeader.setAttribute('grid-row', '1');
-
   const taskList = document.createElement('div');
   taskList.setAttribute('class', 'tasks');
   taskList.setAttribute('grid-row', '2');
 
+  if (filteredTasks.length === 0) {
+    header = `You have no ${type} tasks!`;
+  }
+  else {
+    for (let i = 0; i < filteredTasks.length; i++) {
+      taskList.appendChild(createTaskCard(filteredTasks[i]));
+    }
+  }
+
+  const taskListHeader = document.createElement('h1');
+  taskListHeader.appendChild(document.createTextNode(header));
+  taskListHeader.setAttribute('grid-row', '1');
+
   taskInfo.appendChild(taskListHeader);
   taskInfo.appendChild(taskList);
-
-  for (let i = 0; i < tasks.length; i++) {
-    taskList.appendChild(createTaskCard(filteredTasks[i]));
-  }
 }
 
 function loadProject (project) {
