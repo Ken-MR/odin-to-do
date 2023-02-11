@@ -115,6 +115,7 @@ export function loadTasks (tasks, type) {
 
   let filteredTasks = [];
   let header = 'Your Tasks';
+  let today = format(new Date(), 'yyyy-MM-dd');
   switch (type) {
     case 'Today':
       tasks.forEach((task) => {
@@ -125,7 +126,6 @@ export function loadTasks (tasks, type) {
       });
       break;
     case 'Upcoming':
-      let today = format(new Date(), 'yyyy-MM-dd');
       header = "Upcoming tasks";
       tasks.forEach((task) => {
         let parsedDate = parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
@@ -135,6 +135,13 @@ export function loadTasks (tasks, type) {
       });
       break;
     case 'Past Due':
+      header = "Upcoming tasks";
+      tasks.forEach((task) => {
+        let parsedDate = parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
+        if (compareAsc(parsedDate, parseISO(today)) < 0) {
+          filteredTasks.push(task);
+        }
+      });
       break;
     case 'Anytime':
       break;
