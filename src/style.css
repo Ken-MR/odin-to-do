@@ -161,7 +161,16 @@ input[type="submit"] {
 
     display: grid;
     grid-template-rows: 50px 100px 50px;
-    
+}
+
+.due-soon {
+    border: 5px solid rgb(202, 199, 18);
+    border-left: 15px solid rgb(202, 199, 18);
+}
+
+.past-due {
+    border: 5px solid rgb(223, 37, 12);
+    border-left: 15px solid rgb(223, 37, 12);;
 }
 
 .card > h3 {

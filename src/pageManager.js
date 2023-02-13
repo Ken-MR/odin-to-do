@@ -135,7 +135,7 @@ export function loadTasks (tasks, type) {
       });
       break;
     case 'Past Due':
-      header = "Upcoming tasks";
+      header = "Late tasks";
       tasks.forEach((task) => {
         let parsedDate = parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
         if (compareAsc(parsedDate, parseISO(today)) < 0) {
@@ -199,7 +199,7 @@ function loadProject (project) {
   projectDelete.addEventListener('click', () => {
     Swal.fire({
       title: 'Are you sure you want to delete this project?',
-      text: "You won't be able to revert this and it will deleted all associated tasks!",
+      text: "You won't be able to revert this and it will delete all associated tasks!",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -242,6 +242,18 @@ function createTaskCard (task) {
 
   let card = document.createElement('div');
   card.setAttribute('class', 'card');
+
+  let today = format(new Date(), 'yyyy-MM-dd');
+  let parsedDate = parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
+
+  if (task.priority !== 'none') {
+    if (compareAsc(parsedDate, parseISO(today)) < 0) {
+      card.classList.add('past-due');
+    }
+    else if (isThisWeek(parsedDate) && (compareAsc(parsedDate, parseISO(today)) >= 0)) {
+      card.classList.add('due-soon');
+    }
+  }
 
   let cardName = document.createElement('h3');
   cardName.appendChild(document.createTextNode(taskName));
