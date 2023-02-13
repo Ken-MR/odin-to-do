@@ -211,6 +211,14 @@ input[type="submit"] {
     border-radius: 10px;
 }
 
+.task-overdue {
+    border: 5px solid rgb(223, 37, 12);
+}
+
+.task-soon {
+    border: 5px solid rgb(202, 199, 18);
+}
+
 .task-date {
     grid-row: 1;
     grid-column: 1;

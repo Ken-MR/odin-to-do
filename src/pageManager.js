@@ -473,6 +473,18 @@ function displayTask (task) {
   taskData.style.gridRow = '2';
   taskData.setAttribute('class', 'task-data');
 
+  let today = format(new Date(), 'yyyy-MM-dd');
+  let parsedDate = parse(`${task.dueDate}`, 'yyyy-MM-dd', new Date());
+
+  if (task.priority !== 'none') {
+    if (compareAsc(parsedDate, parseISO(today)) < 0) {
+      taskData.classList.add('task-overdue');
+    }
+    else if (isThisWeek(parsedDate) && (compareAsc(parsedDate, parseISO(today)) >= 0)) {
+      taskData.classList.add('task-soon');
+    }
+  }
+
   taskInfo.appendChild(taskHeader);
   taskInfo.appendChild(taskData);
 
