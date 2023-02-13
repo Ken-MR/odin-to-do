@@ -240,11 +240,16 @@ input[type="submit"] {
     padding: 10px;
 }
 
-.delete-icon {
+.task-footer {
     grid-row: 3;
     grid-column: 1 / -1;
     position: relative;
     top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.delete-icon, .edit-icon {
     cursor: pointer;
 }
 

@@ -500,9 +500,20 @@ function displayTask (task) {
   taskDescription.appendChild(document.createTextNode(` Description: ${task.description}`));
   taskDescription.setAttribute('class', 'task-description');
 
+  const taskFooter = document.createElement('div');
+
   const taskDelete = document.createElement('div');
-  taskDelete.innerHTML = '<i class = "material-icons">delete</i>';
-  taskDelete.setAttribute('class', 'delete-icon');
+  taskDelete.innerHTML = '<i class = "material-icons delete-icon">delete</i>';
+  taskDelete.classList.add('delete-icon');
+
+  const taskEdit = document.createElement('div');
+  taskEdit.innerHTML = '<i class = "material-icons edit-icon">edit</i>';
+  taskEdit.classList.add('delete-icon');
+
+  taskFooter.appendChild(taskEdit);
+  taskFooter.appendChild(taskDelete);
+  taskFooter.classList.add('task-footer');
+
   taskDelete.addEventListener('click', () => {
     Swal.fire({
       title: 'Are you sure you want to delete this task?',
@@ -529,5 +540,5 @@ function displayTask (task) {
   taskData.appendChild(taskDueDate);
   taskData.appendChild(taskPriority);
   taskData.appendChild(taskDescription);
-  taskData.appendChild(taskDelete);
+  taskData.appendChild(taskFooter);
 }
