@@ -29,7 +29,7 @@ export function generateLayout() {
   content.appendChild(sideBar);
   content.appendChild(info);
 
-  const filters = ['Today', 'Upcoming', 'Past Due', 'Anytime', 'All Tasks'];
+  const filters = ['Today', 'Upcoming', 'Past Due', 'Anytime', 'All Tasks', 'Add Task'];
 
   const filterList = document.createElement('ul');
 
@@ -79,10 +79,18 @@ export function generateLayout() {
 
 function filterListeners (filter) {
   let tab = document.getElementById(`${filter.replace(/\s/g, "-")}`);
-  tab.addEventListener('click', () => {
-    console.log(`You clicked on ${filter}`)
-    loadTasks(tasks, filter);
-  });
+  if (filter === 'Add Task') {
+    tab.addEventListener('click', () => {
+      console.log(`You clicked on ${filter}`)
+      addTaskPage();
+    });
+  }
+  else {
+    tab.addEventListener('click', () => {
+      console.log(`You clicked on ${filter}`)
+      loadTasks(tasks, filter);
+    });
+  }
 }
 
 export function loadTasks (tasks, type) {
