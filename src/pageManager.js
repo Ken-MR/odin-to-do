@@ -1,6 +1,6 @@
 
 import Swal from 'sweetalert2';
-import { projects } from './taskLogic';
+import { projects, tasks } from './taskLogic';
 import { isToday, isThisWeek, compareAsc, parse, parseISO, format } from 'date-fns'
 
 export function generateLayout() {
@@ -461,7 +461,7 @@ function manageTasks () {
 
 window.manageTasks = manageTasks;
 
-function displayTask (task) {
+function displayTask (task, edit = false) {
   const taskInfo = document.getElementById('task-info');
   clearTaskWindow(taskInfo);
 
@@ -489,16 +489,31 @@ function displayTask (task) {
   taskInfo.appendChild(taskData);
 
   const taskDueDate = document.createElement('div');
-  taskDueDate.appendChild(document.createTextNode(`Due: ${task.dueDate}`));
-  taskDueDate.setAttribute('class', 'task-date');
+  const taskDueDateText = document.createElement('div');
+  taskDueDateText.appendChild(document.createTextNode(`${task.dueDate}`));
+  taskDueDate.innerHTML = `Due: `;
+  taskDueDate.appendChild(taskDueDateText);
+  taskDueDateText.setAttribute('class', 'task-date');
 
   const taskPriority = document.createElement('div');
-  taskPriority.appendChild(document.createTextNode(`Priority: ${task.priority}`));
-  taskPriority.setAttribute('class', 'task-priority');
+  const taskPriorityText = document.createElement('div');
+  taskPriorityText.appendChild(document.createTextNode(`${task.priority}`));
+  taskPriority.innerHTML = `Priority: `;
+  taskPriority.appendChild(taskPriorityText);
+  taskPriorityText.setAttribute('class', 'task-priority');
 
   const taskDescription = document.createElement('div');
-  taskDescription.appendChild(document.createTextNode(` Description: ${task.description}`));
-  taskDescription.setAttribute('class', 'task-description');
+  const taskDescriptionText = document.createElement('div');
+  taskDescriptionText.appendChild(document.createTextNode(`${task.description}`));
+  taskDescription.innerHTML = ` Description: `;
+  taskDescription.appendChild(taskDescriptionText);
+  taskDescriptionText.setAttribute('class', 'task-description');
+
+  if (edit) {
+    taskDueDateText.setAttribute('contenteditable', true);
+    taskPriorityText.setAttribute('contenteditable', true);
+    taskDescriptionText.setAttribute('contenteditable', true);
+  }
 
   const taskFooter = document.createElement('div');
 
@@ -507,8 +522,9 @@ function displayTask (task) {
   taskDelete.classList.add('delete-icon');
 
   const taskEdit = document.createElement('div');
-  taskEdit.innerHTML = '<i class = "material-icons edit-icon">edit</i>';
-  taskEdit.classList.add('delete-icon');
+  taskEdit.classList.add('modify-icon');
+
+  taskEdit.innerHTML = (edit ? '<i class="material-icons save-icon">save</i>' : '<i class = "material-icons edit-icon">edit</i>');
 
   taskFooter.appendChild(taskEdit);
   taskFooter.appendChild(taskDelete);
@@ -537,6 +553,44 @@ function displayTask (task) {
     })
   });
 
+  if (!edit) {  // if task is not editable create funciton to make editable version
+    taskEdit.addEventListener('click', () => {
+      Swal.fire({
+        title: 'Edit Info',
+        text: "Would you like to edit this task's information?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, I have changes!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          displayTask(task, true);
+        }
+      })
+    });
+  }
+  else {  // if task is being edited make it possible to save the changes
+    taskEdit.addEventListener('click', () => {
+      Swal.fire({
+        title: 'Save info',
+        text: "Would you like to update this task's information?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          task.priority = taskPriorityText.textContent;
+          task.description = taskDescriptionText.textContent;
+          task.dueDate = taskDueDateText.textContent;
+          displayTask(task);
+        }
+      })
+    })
+  }
+  
   taskData.appendChild(taskDueDate);
   taskData.appendChild(taskPriority);
   taskData.appendChild(taskDescription);

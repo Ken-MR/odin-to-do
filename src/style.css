@@ -234,7 +234,7 @@ input[type="submit"] {
 }
 
 .task-description {
-    grid-row: 2;
+    grid-row: 2 / 3;
     grid-column: 1 / -1;
     border: 2px solid grey;
     padding: 10px;
@@ -249,7 +249,7 @@ input[type="submit"] {
     justify-content: space-between;
 }
 
-.delete-icon, .edit-icon {
+.delete-icon, .edit-icon, .save-icon, .modify-icon {
     cursor: pointer;
 }
 
