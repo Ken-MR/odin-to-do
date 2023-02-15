@@ -1,7 +1,7 @@
 
 import Swal from 'sweetalert2';
 import { projects, tasks } from './taskLogic';
-import { isToday, isThisWeek, compareAsc, parse, parseISO, format } from 'date-fns'
+import { isToday, isThisWeek, compareAsc, parse, parseISO, format, isMatch } from 'date-fns'
 
 export function generateLayout() {
   console.log('Generating a page!');
@@ -488,6 +488,8 @@ function displayTask (task, edit = false) {
   taskInfo.appendChild(taskHeader);
   taskInfo.appendChild(taskData);
 
+  // below code creates Due: [object HTMLSpanElement], etc instead of Due: due date
+
   const taskDueDate = document.createElement('div');
   const taskDueDateText = document.createElement('div');
   taskDueDateText.appendChild(document.createTextNode(`${task.dueDate}`));
@@ -572,22 +574,33 @@ function displayTask (task, edit = false) {
   }
   else {  // if task is being edited make it possible to save the changes
     taskEdit.addEventListener('click', () => {
-      Swal.fire({
-        title: 'Save info',
-        text: "Would you like to update this task's information?",
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          task.priority = taskPriorityText.textContent;
-          task.description = taskDescriptionText.textContent;
-          task.dueDate = taskDueDateText.textContent;
-          displayTask(task);
-        }
-      })
+      // regular expression to validate date matches proper format
+      let priorityCheck = taskPriorityText.textContent;
+
+      if (priorityCheck !== 'none' && priorityCheck !== 'low' && priorityCheck !== 'medium' && priorityCheck !== 'high') {
+        alert('Please select none, low, medium, or high for the task priority.');
+      }
+      else if (!isMatch(`${taskDueDateText.textContent}`, 'yyyy-MM-dd')) {
+        alert('Please enter a valid date in yyyy-MM-dd format.');
+      }
+      else {
+        Swal.fire({
+          title: 'Save info',
+          text: "Would you like to update this task's information?",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            task.priority = taskPriorityText.textContent;
+            task.description = taskDescriptionText.textContent;
+            task.dueDate = taskDueDateText.textContent;
+            displayTask(task);
+          }
+        })
+      }
     })
   }
   
