@@ -6,12 +6,10 @@ export let projects = [];
 export function addTask () {
   console.log('Creating a task!');
   tasks.push(new Task(`${title.value}`, `${dueDate.value}`, `${priority.value}`, `${description.value}`, tasks.length, `${project.value}`));
+  populateStorage(tasks, 'tasks');
 }
 
 export function createProject () {
-//  else if (projects.indexOf(`${project.value}`) !== -1) {
-//  to lower case and string then mapping
-//  else if (projects.includes(`${project.value}`)) {
 
   let names = [];
 
@@ -27,6 +25,7 @@ export function createProject () {
   }
   else {
     projects.push(new Project(`${project.value}`, projects.length));
+    populateStorage(projects, 'project');
     return;
   }
 }
@@ -35,6 +34,7 @@ export function deleteTask (task) {
   let index = task.id;
   tasks.splice(index,1);
   tasks.forEach(e => e.id = tasks.indexOf(e));
+  populateStorage(tasks, 'tasks');
 }
 
 export function deleteProject (project) {
@@ -55,6 +55,8 @@ export function deleteProject (project) {
     tasks.splice(indices[i], 1)
   }
   tasks.forEach(e => e.id = tasks.indexOf(e));
+  populateStorage(projects, 'project');
+  populateStorage(tasks, 'tasks');
 }
 
 window.addTask = addTask;
@@ -83,3 +85,29 @@ export class Project {
 }
 
 projects.push(new Project('misc', 0));
+
+export function fetchData() {
+
+  if (window.localStorage.getItem('tasks')) {
+      const storedTasks = JSON.parse(window.localStorage.getItem('tasks'));
+      for (let i = 0; i < storedTasks.length; i++) {
+          tasks[i] = storedTasks[i]
+      }
+  }
+
+  if (window.localStorage.getItem('projects')) {
+      const storedProjects = JSON.parse(window.localStorage.getItem('projects'));
+      for (let i = 1; i < storedProjects.length; i++) {
+          projects[i] = storedProjects[i]
+      }
+  }
+}
+
+function populateStorage (data, type) {
+  if (type === 'tasks') {
+    window.localStorage.setItem('tasks', JSON.stringify(data));
+  }
+  else {
+    window.localStorage.setItem('projects', JSON.stringify(data));
+  }
+}
